@@ -1,0 +1,349 @@
+<!doctype html>
+<head>
+  <title>{{ page_title }}</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="{{ page_description | escape }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  {{ content_for_header }} <!-- Header hook for plugins -->
+  {{ 'application.css' | asset_url | stylesheet_tag }}
+  {{ 'application.js' | asset_url | script_tag }}
+  {% include 'social-meta-tags' %}
+  
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('supports-no-js', 'supports-js');
+
+    var theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        itemAddedToCart: {{ 'products.product.item_added_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        viewCart: {{ 'products.product.view_cart' | t | json }},
+        zoomClose: {{ 'products.zoom.close' | t | json }},
+        zoomPrev: {{ 'products.zoom.prev' | t | json }},
+        zoomNext: {{ 'products.zoom.next' | t | json }}
+      },
+      mapStrings: {
+        addressError: {{ 'homepage.map.address_error' | t | json }},
+        addressNoResults: {{ 'homepage.map.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'homepage.map.address_query_limit_html' | t | json }},
+        authError: {{ 'homepage.map.auth_error_html' | t | json }}
+      }
+    };
+
+    {%- if template == 'collection' -%}
+      {%- if current_tags -%}
+        {%- capture tag_handles -%}
+            {%- for tag in current_tags -%}
+              {{- tag | handle | append: '|' -}}
+            {%- endfor -%}
+        {%- endcapture -%}
+      {%- endif -%}
+      theme.breadcrumbs = {
+        collection: {
+          title: {{ collection.title | json }},
+          link: "{{ shop.url }}{{ collection.url }}{%- if current_tags -%}/{{- tag_handles | split: '|' | join: '+' -}}{%- endif -%}"
+        }
+      };
+      sessionStorage.setItem("breadcrumb", JSON.stringify(theme.breadcrumbs.collection));
+
+    {%- elsif template != 'product' -%}
+      if (sessionStorage.getItem("breadcrumb")) {
+        sessionStorage.removeItem("breadcrumb")
+      }
+    {%- endif -%}
+  </script>
+  
+  <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
+</head>
+<body>
+  
+  {%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign page_url = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |   replace:'\/','/' |    replace:'%20',' ' |    replace:'\u0026','&'  -%}
+{%- assign param_page = '' -%}
+{%- for i in (1..1) -%}
+	{%- unless page_url contains "?" -%}{% break %}{%- endunless -%}
+	{%- assign query_string = page_url | split:'?' | last -%}
+	{%- assign qry_parts= query_string | split:'&' -%}
+	{%- for part in qry_parts -%}
+		{%- assign key_and_value = part | split:'=' -%}
+		{%- if key_and_value.size > 1 -%}
+			{% if key_and_value[0] == 'sort_view' %}
+				{%- assign param_page = key_and_value[1] -%}
+			{% endif%}
+		{%- endif -%}
+	{%- endfor -%}
+{%- endfor -%}
+
+
+  {% for link in linklists.main-menu.links %}
+    {% assign child_list_handle = link.title | handleize %}
+    {% if linklists[child_list_handle].links != blank %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+      [{% for childlink in linklists[child_list_handle].links %}
+        <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+      {% endfor %}]
+    {% else %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+    {% endif %}
+  {% endfor %}
+
+
+  
+  
+  <a href="/cart">cart</a>
+
+  {% if shop.customer_accounts_enabled %}
+    {% if customer %}
+      <a href="/account">account</a>
+      {{ 'log out'  | customer_logout_link }}
+    {% else %}
+      {{ 'log in ' | customer_login_link }}
+      {{ 'register' | customer_register_link }}
+    {% endif %}
+  {% endif %}
+
+  
+ 
+  
+ {% comment %} {% assign c = collections['boys-games'] %}
+  
+   {% assign c = collections['boys-games'] %}  {% endcomment %}
+  
+  
+  {% comment %}
+        {% for collection in collections %}
+          {% unless collection.handle == 'frontpage' %}
+            {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+            <a href="{{ collection.url }}">More {{ collection_title }} &rsaquo;</a>
+            {% for product in collection.products limit:5 %}
+              {% assign grid_item_width = 'large--one-fifth medium--one-half' %}
+              <div>
+                <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+                {{ product.price | money }}
+                {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
+                <a href="{{ product.url | within: collection }}">
+                  <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+                </a>
+              </div>
+            {% endfor %}
+          {% endunless %}
+        {% endfor %} 
+  {% endcomment %}
+  
+  
+  
+  
+  
+  {% for product in collections  %} 
+   - <a href="http://{{ shop.domain }}{{ routes.collections_url }}/{{ product.handle }}?filter_value" >{{ product.title }}</a>
+  {% endfor %}
+
+ 
+  
+  <div class="container">
+    <div class="shop-products">
+    <div class="row">
+      <div class="col-3">
+        <div class="row">
+          <ul id="myUL">
+              {% for product in collections  %} 
+                <li><a href="http://{{ shop.domain }}{{ routes.collections_url }}/{{ product.handle }}" >{{ product.title }}</a>  </li>
+              {% endfor %}
+            
+<!--             <li><span class="caret">Beverages</span>
+              <ul class="nested">
+                <li>Water</li>
+                <li>Coffee</li>
+                <li><span class="caret">Tea</span>
+                  <ul class="nested">
+                    <li>Black Tea</li>
+                    <li>White Tea</li>
+                    <li><span class="caret">Green Tea</span>
+                      <ul class="nested">
+                        <li>Sencha</li>
+                        <li>Gyokuro</li>
+                        <li>Matcha</li>
+                        <li>Pi Lo Chun</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li> -->
+          </ul>
+          
+          
+          <div class="side-filters">
+            <h5>Expanded Filters</h5>
+            <div class="checklist">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Recommended
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Recently Added
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Expiring Soon
+                </label>
+              </div>
+
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Most Rated
+                </label>
+              </div>
+
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Price: Low > High
+                </label>
+              </div>
+
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Price High > Low
+                </label>
+              </div>
+
+            </div>
+          </div>
+          <div class="side-filters">
+            <h5>Year of manufacturing</h5>
+            <div class="checklist">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  1954
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  1955
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  1956
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  1957
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  1958
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  1959
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="products-wrapper ">
+          <div class="row">
+            <div class="col-12">
+              <div class="sort-row sort-filters d-flex justify-content-between">
+                <div class="sort-left">
+                  <div class="sort-filter-dropdown-wrapper">
+                    
+                    
+                     <script>
+  window.theme = window.theme || {};
+  // Override default values of shop.strings for each template.
+  // Alternate product templates can change values of
+  //
+  theme.collectionStrings = {
+    sortBy: '{{ collection.sort_by | default: collection.default_sort_by }}',
+    sortView: '{{ collection.sort_view | default: collection.default_sort_view }}'
+  }
+</script>
+                
+    					
+                     <header class="grid">
+    
+    {% section 'sort' %}
+    
+ 
+  </header>
+                    
+         
+                  </div>
+                </div>
+                <div class="sort-right">
+                  
+                  
+                  {% assign sort_view = collection.sort_view | default: collection.default_sort_view %}
+                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group" aria-describedby="a11y-refresh-page-message a11y-selection-message">
+                    
+                    <input type="radio" class="btn-check" name="sort_view" id="btnradio1" value="block"  autocomplete="off" {% if param_page == "block" %} checked {% endif %} >
+                    <label class="btn btn-chck SortView" sortv="btnradio1" for="btnradio1">Block</label>
+                    
+                    <input type="radio" class="btn-check" name="sort_view" id="btnradio2" value="list" autocomplete="off" {% if param_page == "list" %} checked {% endif %} >
+                    <label class="btn btn-chck SortView" sortv="btnradio2" for="btnradio2">List</label>
+
+                  </div>
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="products py-5 ">
+           
+              
+              
+              	
+    				{{ content_for_layout }}
+  				
+             
+              
+              	
+              
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    
+   
+  </div>
+  {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>

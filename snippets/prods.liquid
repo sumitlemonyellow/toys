@@ -1,0 +1,21 @@
+	
+{% for product in prods.products  %} 
+
+<div class="col">
+  <div class="card">
+    <a href="{{ product.url | within: collection }}">
+      <div class="product-image" style="background-image : url( '{{ product.featured_image.src | img_url: 'large' }} ')"></div>
+    </a>
+    <div class="card-body">
+      <p class="desc">{{ product.description }}</p>
+      <h2>{{ product.price | money }}</h2>
+<!--       <p class="shipping">{{ shipping_method.handle }} | {{ shipping_method.title }} | {{ shipping_method.weight }}</p> -->
+      <div class="d-flex justify-content-between">
+        <button class="btn-watch" type="button"><span class="icon">
+          <img src="./img/heart.svg" /></span>Watch</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}

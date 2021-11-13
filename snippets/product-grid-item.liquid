@@ -1,0 +1,89 @@
+{% unless grid_item_width %}
+  {% assign grid_item_width = 'medium-up--one-third small--one-half' %}
+{% endunless %}
+
+{% unless current_collection == blank %}
+  {% assign current_collection = collection %}
+{% endunless %}
+
+{% assign on_sale = false %}
+{% assign sale_text = 'products.product.sale' | t %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% assign sold_out_text = 'products.product.sold_out' | t %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{%- assign img_url = product.featured_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+
+{% comment %}
+--- SAMPLE product design from E-commerce template ---- 
+<div class="col">
+  <div class="card">
+    <a href="{{ product.url | within: collection }}">
+      <div class="product-image" style="background-image : url( '{{ product.featured_image.src | img_url: 'large' }} ')"></div>
+    </a>
+    <div class="card-body">
+      <p class="desc">{{ product.description }}</p>
+      <h2>{{ product.price | money }}</h2>
+<!--       <p class="shipping">{{ shipping_method.handle }} | {{ shipping_method.title }} | {{ shipping_method.weight }}</p> -->
+      <div class="d-flex justify-content-between">
+        <button class="btn-watch" type="button"><span class="icon">
+          <img src="./img/heart.svg" /></span>Watch</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+
+<div class="product col slide-up-animation animated" role="listitem">
+  {% unless product.featured_image == blank %}
+  
+  
+    <div class="card">
+      <a href="{{ product.url | within: collection }}">
+        <div class="product-image"  style="background-image : url( '{{ product.featured_image.src | img_url: 'large' }} ')"></div>
+      </a>
+      <div class="card-body">
+        <p class="desc">{{ product.description }}</p>
+        <h2>{{ product.price | money }}</h2>
+  <!--       <p class="shipping">{{ shipping_method.handle }} | {{ shipping_method.title }} | {{ shipping_method.weight }}</p> -->
+        <div class="d-flex justify-content-between">
+          <button class="btn-watch" type="button"><span class="icon">
+            <img src="./img/heart.svg" /></span>Watch</button>
+        </div>
+      </div>
+    </div>
+  
+  {% for option in product.variant.options %}
+  - {{ option }}
+{% endfor %}
+  
+  {% comment %}
+    <div class="supports-js" style="max-width: {{ 600 | times: product.featured_image.aspect_ratio | round }}px; margin: 0 auto;">
+      <a href="{{ product.url }}" class="product__image-wrapper product__image-wrapper--loading" style="padding-top:{{ 1 | divided_by: product.featured_image.aspect_ratio | times: 100}}%;" title="{{ product.title | escape }}" data-image-link>
+        <img class="product__image lazyload"
+             alt="{{ product.featured_image.alt | escape }}"
+             style="max-width: {{ 600 | times: product.featured_image.aspect_ratio | round }}px; max-height: 600px;"
+             data-src="{{ img_url }}"
+             data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+             data-aspectratio="{{ product.featured_image.aspect_ratio }}"
+             data-sizes="auto"
+             data-image>
+      </a>
+    </div>
+  {% endcomment %}
+  
+  {% else %}
+    <a href="{{ product.url }}" class=" supports-js product__image-wrapper" title="{{ product.title | escape }}">
+      <img src="{{ product.featured_image.src | img_url: 'grande' }}" alt="{{ product.featured_image.alt | escape }}">
+    </a>
+  {% endunless %}
+
+
+</div>

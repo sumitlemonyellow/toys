@@ -1,0 +1,228 @@
+@charset "UTF-8";
+a,
+button,
+.btn {
+  outline: none !important;
+}
+
+ul,
+#myUL {
+  list-style-type: none;
+}
+ul li a,
+#myUL li a {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.022em;
+  color: #19191D;
+  text-decoration: none;
+}
+
+a,
+.btn,
+button {
+  text-decoration: none;
+}
+
+/* Remove margins and padding from the parent ul */
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the caret/arrow */
+.caret {
+  cursor: pointer;
+  user-select: none;
+  /* Prevent text selection */
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+  content: "▶";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+  transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.nested {
+  display: none;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+  display: block;
+}
+
+.sort-filters .sort-filter-dropdown-wrapper > p {
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.sort-filters select {
+  background: transparent;
+  border-color: #19191D;
+  border-style: solid;
+  border-width: 1px;
+  color: #19191D;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.sort-filters select:hover {
+  background: rgba(0, 0, 0, 0);
+  transition: all 0.3s ease;
+}
+.sort-filters select:active {
+  background: rgba(0, 0, 0, 0);
+}
+.sort-filters .sort-right .btn {
+  background-color: #EBF2FF;
+}
+.sort-filters .sort-right .btn:hover {
+  background-color: #EBF2FF;
+}
+.sort-filters .sort-right .btn:active {
+  box-shadow: 0 0 1px #666666;
+  background-color: white;
+}
+
+.btn-check:checked + .btn-chck {
+  color: #19191D !important;
+  box-shadow: 0 0 1px #666666 !important;
+  background-color: white !important;
+}
+
+.products-wrapper {
+  box-shadow: 0px 1px 2px rgba(58, 58, 68, 0.24), 0px 2px 4px rgba(90, 91, 106, 0.24);
+  border-radius: 8px;
+}
+.products-wrapper .sort-row {
+  margin: 8px;
+}
+
+.products {
+  font-family: Inter;
+  font-style: normal;
+}
+.products .row {
+  padding: 32px;
+}
+.products .col {
+  margin-bottom: 24px;
+}
+.products .product-image {
+  height: 260px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.products .card {
+  border: 0;
+  border-radius: 8px;
+}
+.products .card .card-body {
+  padding: 16px 12px;
+}
+.products .card:hover {
+  box-shadow: 0px 2px 4px rgba(59, 69, 123, 0.2), 0px 4px 8px rgba(92, 107, 192, 0.2);
+}
+.products .desc {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.0275em;
+  color: #19191D;
+  height: 50px;
+}
+.products .price {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 150%;
+  color: #19191D;
+}
+.products .shipping {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 143%;
+  /* or 20px */
+}
+.products .btn-watch {
+  background: transparent;
+  border-color: #2264D1;
+  border-style: solid;
+  border-width: 1px;
+  color: #19191D;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+.products .btn-watch .icon {
+  margin-right: 10px;
+}
+.products .btn-watch:hover {
+  background: rgba(0, 0, 0, 0);
+  transition: all 0.3s ease;
+}
+.products .btn-watch:active {
+  background: rgba(0, 0, 0, 0);
+}
+
+.side-filters {
+  margin-top: 24px;
+  background-color: #F7F7FA;
+}
+.side-filters h5 {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  margin-bottom: 20px;
+}
+.side-filters .checklist {
+  margin-left: 12px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 150%;
+  /* identical to box height, or 24px */
+}
+.side-filters .checklist input {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #19191D;
+  background: #DADADA;
+  border-radius: 0;
+  margin-right: 20px;
+}
+.side-filters .checklist .form-check {
+  margin-bottom: 24px;
+}
+.side-filters .checklist label {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 150%;
+  /* identical to box height, or 24px */
+}
+
+.shop-products {
+  margin-top: 44px;
+}
+
+/*# sourceMappingURL=style.css.map */
