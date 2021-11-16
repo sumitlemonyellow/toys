@@ -28,100 +28,31 @@
 
     var theme = {
       strings: {
-        addToCart: {
-          {
-            'products.product.add_to_cart' | t | json
-          }
-        },
-        itemAddedToCart: {
-          {
-            'products.product.item_added_to_cart' | t | json
-          }
-        },
-        soldOut: {
-          {
-            'products.product.sold_out' | t | json
-          }
-        },
-        unavailable: {
-          {
-            'products.product.unavailable' | t | json
-          }
-        },
-        viewCart: {
-          {
-            'products.product.view_cart' | t | json
-          }
-        },
-        zoomClose: {
-          {
-            'products.zoom.close' | t | json
-          }
-        },
-        zoomPrev: {
-          {
-            'products.zoom.prev' | t | json
-          }
-        },
-        zoomNext: {
-          {
-            'products.zoom.next' | t | json
-          }
-        }
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        itemAddedToCart: {{ 'products.product.item_added_to_cart' | t | json }},
+        soldOut: {{'products.product.sold_out' | t | json}},
+        unavailable: {{'products.product.unavailable' | t | json}},
+        viewCart: {{'products.product.view_cart' | t | json}},
+        zoomClose: {{'products.zoom.close' | t | json}},
+        zoomPrev: {{'products.zoom.prev' | t | json}},
+        zoomNext: {{'products.zoom.next' | t | json}}
       },
       mapStrings: {
-        addressError: {
-          {
-            'homepage.map.address_error' | t | json
-          }
-        },
-        addressNoResults: {
-          {
-            'homepage.map.address_no_results' | t | json
-          }
-        },
-        addressQueryLimit: {
-          {
-            'homepage.map.address_query_limit_html' | t | json
-          }
-        },
-        authError: {
-          {
-            'homepage.map.auth_error_html' | t | json
-          }
-        }
+        addressError: { { 'homepage.map.address_error' | t | json }},
+        addressNoResults: {{'homepage.map.address_no_results' | t | json}},
+        addressQueryLimit: {{'homepage.map.address_query_limit_html' | t | json }},
+        authError: {{'homepage.map.auth_error_html' | t | json}}
       }
     };
 
-    {
-      %
-      -
-      if template == 'collection' - %
-    } {
-      %
-      -
-      if current_tags - %
-    } {
-      %
-      -capture tag_handles - %
-    } {
-      %
-      -
-      for tag in current_tags - %
-    } {
-      {
-        -tag | handle | append: '|' -
-      }
-    } {
-      %
-      -endfor - %
-    } {
-      %
-      -endcapture - %
-    } {
-      %
-      -endif - %
-    }
+    {% - if template == 'collection' - %}
+    {% -if current_tags - %}
+    {% -capture tag_handles - %}
+    {% -for tag in current_tags - %}
+    {{ -tag | handle | append: '|' - }}
+    {% -endfor - %}
+    {% -endcapture - %}
+    {% -endif - %}
     theme.breadcrumbs = {
       collection: {
         title: {
@@ -134,16 +65,10 @@
     };
     sessionStorage.setItem("breadcrumb", JSON.stringify(theme.breadcrumbs.collection));
 
-    {
-      %
-      -elsif template != 'product' - %
-    }
+    {% -elsif template != 'product' - %}
     if (sessionStorage.getItem("breadcrumb")) {
       sessionStorage.removeItem("breadcrumb")
-    } {
-      %
-      -endif - %
-    }
+    } {% -endif - %}
   </script>
 
   <script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script>
