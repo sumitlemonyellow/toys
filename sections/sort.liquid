@@ -28,16 +28,6 @@
   </div>
   {% endif %}
 
-
-
-  <select name="sort_by" id="SortBy" aria-describedby="a11y-refresh-page-message a11y-selection-message">
-    {% for option in collection.sort_options %}
-    <option value="{{ option.value }}" {% if sort_by == option.value %} selected="selected" {% endif %}>
-      {{ option.name }}</option>
-    {% endfor %}
-  </select>
-
-
   <select name="id" id="productSelect" aria-describedby="a11y-refresh-page-message a11y-selection-message">
     {% for product in collection.products %}
     {% for variant in product.variants %}
