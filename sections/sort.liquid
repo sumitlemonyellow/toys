@@ -28,10 +28,20 @@
   </div>
   {% endif %}
 
+Type :
+{% for product in collection.products %}
+    {% for tp in product.type %}
+  {{ tp }}
+{% endfor %}
+    {% endfor %}
 
-  Type {{ product.type | join: ', ' }}
+Tag: 
+    {% for product in collection.products %}
+    {% for tg in product.tag %}
+   {{ tg }}
+{% endfor %}
+    {% endfor %}
 
-  Tag {{ product.tag | join: ', ' }}
 
   <select name="id" id="productSelect" aria-describedby="a11y-refresh-page-message a11y-selection-message">
     {% for product in collection.products %}
