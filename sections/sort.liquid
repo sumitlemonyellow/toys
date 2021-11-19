@@ -28,6 +28,11 @@
   </div>
   {% endif %}
 
+
+  Type {{ product.type | join: ', ' }}
+
+  Tag {{ product.tag | join: ', ' }}
+
   <select name="id" id="productSelect" aria-describedby="a11y-refresh-page-message a11y-selection-message">
     {% for product in collection.products %}
     {% for variant in product.variants %}
