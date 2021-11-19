@@ -143,9 +143,9 @@
   
   
   
-  {% for product in collections  %} 
+  {% comment %} {% for product in collections  %} 
    - <a href="http://{{ shop.domain }}{{ routes.collections_url }}/{{ product.handle }}?filter_value" >{{ product.title }}</a>
-  {% endfor %}
+  {% endfor %} {% endcomment %}
 
 
   <div class="container">
@@ -155,6 +155,10 @@
           <div class="row">
             <ul id="myUL">
             NEWWW
+              {% for category in categories  %}
+                {{ category.title }}
+              {% endfor %}
+
               {% for product in collections  %}
               <li><a
                   href="http://{{ shop.domain }}{{ routes.collections_url }}/{{ product.handle }}">{{ product.title }}</a>
